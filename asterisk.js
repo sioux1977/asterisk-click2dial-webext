@@ -7,6 +7,11 @@ var asteriskContext = null;
 var asteriskProtocol = null;
 var asteriskChannel = null;
 
+var asteriskCallerID = null;
+var asteriskInternalLength = null;
+var asteriskExternalPrefix = null;
+var asteriskWebPrefix = null;
+
 var getting = browser.storage.local.get("asterisk");
 getting.then(getOptions, onError);
 
@@ -19,6 +24,11 @@ function getOptions(result) {
   asteriskContext = result.asterisk.context || "default";
   asteriskProtocol = result.asterisk.protocol || "";
   asteriskChannel = result.asterisk.channel || "";
+  
+  asteriskCallerID = result.asterisk.callerid || "";
+  asteriskInternalLength = result.asterisk.internalLength || "0";
+  asteriskExternalPrefix = result.asterisk.externalPrefix || "";
+  asteriskWebPrefix = result.asterisk.webprefix || "/asterisk";
 }
 
 function onError(error) {
@@ -107,7 +117,7 @@ browser.browserAction.onClicked.addListener((handleClick) => {
 function placingCall(selectedNumber) {
   let xhr_login = new XMLHttpRequest();
   let xhr = new XMLHttpRequest();
-  xhr_login.open("GET", "http://" + asteriskServer + ":" + asteriskPort + "/asterisk/mxml?action=Login&Username=" + asteriskUsername + "&Secret=" + asteriskPassword);
+  xhr_login.open("GET", "http://" + asteriskServer + ":" + asteriskPort + "/" + asteriskWebPrefix + "/mxml?action=Login&Username=" + asteriskUsername + "&Secret=" + asteriskPassword);
   xhr_login.send("");
   xhr_login.onreadystatechange = function() {
       if (xhr_login.readyState == 4 && (xhr_login.status == 200 || xhr_login.status == 0)) {
@@ -116,7 +126,12 @@ function placingCall(selectedNumber) {
           var success = response.getElementsByTagName("generic")[0].getAttribute('response')
           //console.log(success);
           if (success == "Success") {
-            xhr.open("GET", "http://" + asteriskServer + ":" + asteriskPort + "/asterisk/mxml?action=originate&channel=" + asteriskProtocol + "/" + asteriskChannel + "&exten=" + selectedNumber + "&context=" + asteriskContext + "&CallerId=" + asteriskChannel + "&priority=1&codecs=alaw&timeout=5000");
+			  
+			if (selectedNumber > asteriskInternalLength) {
+				selectedNumber = asteriskExternalPrefix + selectedNumber;
+			}
+			  
+            xhr.open("GET", "http://" + asteriskServer + ":" + asteriskPort + "/" + asteriskWebPrefix + "/mxml?action=originate&channel=" + asteriskProtocol + "/" + asteriskChannel + "&exten=" + selectedNumber + "&context=" + asteriskContext + "&CallerId=" + asteriskCallerID + "&priority=1&timeout=5000");
             xhr.send("");
           }
           else {

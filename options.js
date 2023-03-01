@@ -7,8 +7,14 @@ function saveOptions(e) {
   var context = document.querySelector("#context").value;
   var protocol = document.querySelector("#protocol").value;
   var channel = document.querySelector("#channel").value;
+  
+  var callerid = document.querySelector("#callerid").value;
+  var internalLength = document.querySelector("#internalLength").value;
+  var externalPrefix = document.querySelector("#externalPrefix").value;
+  var webprefix = document.querySelector("#webprefix").value;
+  
   browser.storage.local.set({
-    asterisk: {server: server, port: port, username:username, password:password, context:context,protocol:protocol,channel:channel}
+    asterisk: {server: server, port: port, username:username, password:password, context:context,protocol:protocol,channel:channel,callerid:callerid,internalLength:internalLength,externalPrefix:externalPrefix,webprefix:webprefix}
   });
 }
 
@@ -23,6 +29,11 @@ function restoreOptions() {
     document.querySelector("#context").value = result.asterisk.context || "default";
     document.querySelector("#protocol").value = result.asterisk.protocol || "";
     document.querySelector("#channel").value = result.asterisk.channel || "";
+    
+    document.querySelector("#callerid").value = result.asterisk.callerid || "";
+    document.querySelector("#internalLength").value = result.asterisk.internalLength || "";
+    document.querySelector("#externalPrefix").value = result.asterisk.externalPrefix || "";
+    document.querySelector("#webprefix").value = result.asterisk.webprefix || "";
   }
 
   function onError(error) {

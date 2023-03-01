@@ -1,11 +1,11 @@
 {
 
     "manifest_version": 2,
-    "name": "Asterisk Click2Dial",
-    "version": "0.3",
+    "name": "Asterisk Click2Dial+",
+    "version": "0.5",
   
     "description": "This is an easy to use extention, select any number on a web page, right click to open the context menu which you can use to call this number.",
-    "author": "Antoine Turmel",
+    "author": "Simone Freddio",
   
     "icons": {
       "48": "icons/asterisk-48.png"
@@ -24,7 +24,7 @@
         "20": "icons/asterisk-20.png",
         "32": "icons/asterisk-32.png"
       },
-      "default_title": "Asterisk Click2Dial",
+      "default_title": "Asterisk Click2Dial+",
       "default_popup": "popup/popupAsterisk.html"
     },
 
