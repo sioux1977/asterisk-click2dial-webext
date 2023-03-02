@@ -127,7 +127,7 @@ function placingCall(selectedNumber) {
           //console.log(success);
           if (success == "Success") {
 			  
-			if (selectedNumber > asteriskInternalLength) {
+			if (selectedNumber.length > asteriskInternalLength) {
 				selectedNumber = asteriskExternalPrefix + selectedNumber;
 			}
 			  
